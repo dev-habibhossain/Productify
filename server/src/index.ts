@@ -1,6 +1,8 @@
-console.log('hey from index.ts file')
+import express  from 'express';
+ const app = express();
 
-const num1:number =5;
-const num2:number =10;
+ app.get("/", (req, res)=> {
+    res.json({success: true});
+ });
 
-console.log(`The sum is: ${num1 + num2}`);
+ app.listen(3000, () => console.log('Server is up and running on PORT:3000'))
