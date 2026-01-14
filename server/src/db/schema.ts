@@ -34,3 +34,27 @@ export const comments = pgTable("comments", {
     createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+    products: many(products),
+    comments: many(comments),
+}));
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+    user: one(users, {
+        fields: [products.userId],
+        references: [users.id],
+    }),
+    comments: many(comments),
+}));
+
+export const commentsRelations = relations(comments, ({ one }) => ({
+    user: one(users, {
+        fields: [comments.userId],
+        references: [users.id],
+    }),
+    product: one(products, {
+        fields: [comments.productId],
+        references: [products.id],
+    }),
+}));
