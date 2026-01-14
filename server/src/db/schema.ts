@@ -2,12 +2,16 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 export const users = pgTable("users", {
-    id: text("id").primaryKey(),
-    email: text("email").notNull().unique(),
-    name: text("name"),
-    imageUrl: text("image_url"),
-    createdAt: timestamp("created_at",{ mode: "date" }).notNull().defaultNow(),
-    updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  imageUrl: text("image_url"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  // updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 });
 
 export const products = pgTable("products", {
