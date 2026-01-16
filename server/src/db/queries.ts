@@ -23,3 +23,19 @@ export const upsertUser = async (data: NewUser) => {
     if (existingUser) return updateUser(data.id, data);
 return createUser(data);
 };
+
+
+//Product queries
+export const createProduct = async (data: NewProduct) => {
+  const [product] = await db.insert(products).values(data).returning();
+  return product;
+};
+
+export const getAllProducts = async () => {
+  return db.query.products.findMany({
+    with: {user: true},
+    orderBy: (products, {desc}) => [desc(products.createdAt)]
+});
+};
+
+export const get
