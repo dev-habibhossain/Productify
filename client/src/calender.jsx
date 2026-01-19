@@ -1,18 +1,6 @@
-import React from 'react';
-
 const calender = () => {
     return (
       <div>
-        {/*
-* Import Cally web component from CDN
-<script type="module" src="https://unpkg.com/cally"></script>
-
-* Or install as a dependency:
-npm i cally
-* and import it in JS
-import "cally";
-*/}
-
         <calendar-date className="cally bg-base-100 border border-base-300 shadow-lg rounded-box">
           <svg
             aria-label="Previous"
