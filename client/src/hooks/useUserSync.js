@@ -1,5 +1,5 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { syncUser } from "../lib/api";
 
@@ -13,11 +13,13 @@ function useUserSync() {
         if(isSignedIn && user && !isPending && !isSuccess) {
             syncUserMutation({
                 email: user.primaryEmailAddress?.emailAddress,
+                name: user.fullName || user.firstName,
+                imageUrl: user.imageUrl,
         });
         }
-    },[]);
+    },[isSignedIn, user, syncUserMutation, isPending, isSuccess]);
 
-    return {};
+    return { isSynced: isSuccess};
 }
 
 export default useUserSync;
