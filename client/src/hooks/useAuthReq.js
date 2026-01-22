@@ -5,19 +5,19 @@ function useAuthReq() {
     const { isSignedIn, getToken, isLoaded } = useAuth();
 
     useEffect(() => {
-        const interceptor = api.interceptors.request.use(async(config) =>{
-            if(isSignedIn){
+        const interceptor = api.interceptors.request.use(async (config) => {
+            if (isSignedIn) {
                 const token = await getToken();
-                if(token){
-                    config.headers.Authorization =`Bearer ${token}`;
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
                 }
             }
             return config;
         });
 
         return () => api.interceptors.request.eject(interceptor);
-    },[isSignedIn, getToken]);
+    }, [isSignedIn, getToken]);
 
-    return {isSignedIn, isClerkLoaded: isLoaded};
+    return { isSignedIn, isClerkLoaded: isLoaded };
 }
 export default useAuthReq;
