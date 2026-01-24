@@ -13,7 +13,11 @@ const ProductPage = () => {
     const { data: product, isLoading, error } = useProduct(id);
     const deleteProduct = useDeleteProduct();
 
-    const handleDelete =() =>{};
+    const handleDelete =() =>{
+        if(confirm("Delete this product permanently")){
+            deleteProduct.mutate(id, {onSuccess: () => navigate("/"),});
+        }
+    };
 
     if(isLoading) return <LoadingSpinner />;
 
@@ -33,31 +37,50 @@ const ProductPage = () => {
     const isOwner = userId === product.userId;
 
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center justify-center">
-                <Link className="btn btn-ghost btn-sm gap-1" to="/">
-                    <ArrowLeftIcon className="size-4" />
-                    Back
-                </Link>
-                { isOwner && (
-                        <div className="flex gap-2">
-                            <Link to={`/edit/${product.id}`} className="btn btn-ghost btn-sm gap-1">
-                                <EditIcon className="size-4" />
-                                Edit
-                            </Link>
-                            <button className="btn btn-error btn-sm gap-1" disabled={deleteProduct.isPending} onClick={handleDelete}>
-                                {deleteProduct.ispending ? (
-                                    <span className="loading loading-spinner loading-xs" />
-                                ):
-                                (
-                                    <Trash2Icon className="size-4" />
-                                )}
-                                Delete
-                            </button>
-                        </div>
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="flex items-center justify-center">
+          <Link to="/" className="btn btn-ghost btn-sm gap-1">
+            <ArrowLeftIcon className="size-4" />
+            Back
+          </Link>
+          {isOwner && (
+            <div className="flex gap-2">
+              <Link
+                to={`/edit/${product.id}`}
+                className="btn btn-ghost btn-sm gap-1"
+              >
+                <EditIcon className="size-4" />
+                Edit
+              </Link>
+              <button
+                onClick={handleDelete}
+                className="btn btn-error btn-sm gap-1"
+                disabled={deleteProduct.isPending}
+              >
+                {deleteProduct.isPending ? (
+                  <span className="loading loading-spinner loading-xs" />
+                ) : (
+                  <Trash2Icon className="size-4" />
                 )}
+                Delete
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+            <div className="card bg-base-300">
+                <figure className="p-4">
+                    <img 
+                    src={product.imageUrl}
+                    alt={product.title}
+                    className="rounded-xl w-full h-80 object-cover"
+                    />
+                </figure>
+
             </div>
         </div>
+      </div>
     );
 };
 
