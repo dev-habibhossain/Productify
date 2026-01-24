@@ -11,10 +11,52 @@ const ProductPage = () => {
     const navigate = useNavigate();
 
     const { data: product, isLoading, error } = useProduct(id);
-    
+    const deleteProduct = useDeleteProduct();
+
+    const handleDelete =() =>{};
+
+    if(isLoading) return <LoadingSpinner />;
+
+    if(error || !product){
+        return (
+            <div className="card bg-base-300 max-w-md mx-auto">
+                <div className="card-body items-center text-center">
+                    <h2 className="card-title text-error">Product not found.</h2>
+                    <Link className="btn btn-primary btn-sm" to="/">
+                        Go Home
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    const isOwner = userId === product.userId;
+
     return (
-        <div>
-            product page
+        <div className="max-w-4xl mx-auto space-y-6">
+            <div className="flex items-center justify-center">
+                <Link className="btn btn-ghost btn-sm gap-1" to="/">
+                    <ArrowLeftIcon className="size-4" />
+                    Back
+                </Link>
+                { isOwner && (
+                        <div className="flex gap-2">
+                            <Link to={`/edit/${product.id}`} className="btn btn-ghost btn-sm gap-1">
+                                <EditIcon className="size-4" />
+                                Edit
+                            </Link>
+                            <button className="btn btn-error btn-sm gap-1" disabled={deleteProduct.isPending} onClick={handleDelete}>
+                                {deleteProduct.ispending ? (
+                                    <span className="loading loading-spinner loading-xs" />
+                                ):
+                                (
+                                    <Trash2Icon className="size-4" />
+                                )}
+                                Delete
+                            </button>
+                        </div>
+                )}
+            </div>
         </div>
     );
 };

@@ -7,6 +7,7 @@ import ProductPage from "./pages/ProductPage";
 import ProfilePage from "./pages/ProfilePage";
 import useAuthReq from "./hooks/useAuthReq";
 import useUserSync from "./hooks/useUserSync";
+import AuthAlert from "./components/AuthAlert";
 
 const App = () => {
   const { isClerkLoaded, isSignedIn } = useAuthReq();
@@ -20,10 +21,28 @@ const App = () => {
       <main className="max-w-5xl mx-auto px-4 py-8">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/product/:id" element={<ProductPage />} />
-          <Route path="/profile" element={isSignedIn ? <ProfilePage /> : <Navigate to='/' />} />
-          <Route path="/create" element={isSignedIn ?<CreatePage /> : <Navigate to='/' />} />
-          <Route path="/edit/:id" element={isSignedIn ?<EditProductPage /> : <Navigate to='/' />} />
+          <Route
+            path="/product/:id"
+            element={
+              isSignedIn ? (
+                <ProductPage />
+              ) : (
+                <AuthAlert data="You must be signed in to view this page." />
+              )
+            }
+          />
+          <Route
+            path="/profile"
+            element={isSignedIn ? <ProfilePage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/create"
+            element={isSignedIn ? <CreatePage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/edit/:id"
+            element={isSignedIn ? <EditProductPage /> : <Navigate to="/" />}
+          />
         </Routes>
       </main>
     </div>
